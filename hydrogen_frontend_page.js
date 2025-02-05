@@ -148,5 +148,3 @@ async function fetchAndUpdateStockData() {
         $w("#percentageText").text = "";
     }
 }
-
-zs n
