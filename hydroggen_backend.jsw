@@ -1,0 +1,179 @@
+import { fetch } from 'wix-fetch';
+import wixSecretsBackend from "wix-secrets-backend";
+
+export async function getStockTickers() {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = 'https://yahoo-finance15.p.rapidapi.com/api/v2/markets/tickers?page=1&type=STOCKS';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const result = await response.json();
+        console.log(result.body);
+        return result.body;
+    } catch (error) {
+        console.error("Error fetching stock tickers:", error);
+        return { error: error.message };
+    }
+}
+
+
+
+// Fetch stock quotes for a given ticker
+export async function getStockQuote(ticker) {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/quote?ticker=AAPL&type=STOCKS`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(`Stock Quote for ${ticker}:`, data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching stock quote:", error.message);
+    }
+}
+
+// Fetch stock history for a given symbol
+export async function getStockHistory(symbol) {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/search?search=${symbol}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(`Stock History for ${symbol}:`, data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching stock history:", error.message);
+    }
+}
+
+// Fetch insider trades
+export async function getInsiderTrades() {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = 'https://yahoo-finance15.p.rapidapi.com/api/v1/markets/insider-trades';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Insider Trades:", data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching insider trades:", error.message);
+    }
+}
+
+// Fetch market news for given tickers
+export async function getMarketNews(tickers) {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = `https://yahoo-finance15.p.rapidapi.com/api/v2/markets/news?tickers=${tickers}&type=ALL`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Market News:", data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching market news:", error.message);
+    }
+}
+
+// Fetch day gainers from the screener
+export async function getDayGainers() {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = 'https://yahoo-finance15.p.rapidapi.com/api/v1/markets/screener?list=day_gainers';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Day Gainers:", data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching day gainers:", error.message);
+    }
+}
+
+// Fetch asset profile for a given ticker
+export async function getAssetProfile(ticker) {
+    const secret = await wixSecretsBackend.getSecret("yahoo");
+    const url = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/stock/modules?ticker=${ticker}&module=asset-profile`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': secret,
+            'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(`Asset Profile for ${ticker}:`, data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching asset profile:", error.message);
+    }
+}
